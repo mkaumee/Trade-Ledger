@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trader Ledger - Profit & Debt Tracking</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // Check if user is logged in
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body>
+    <!-- Main App Container -->
+    <div id="app-container" class="app-container">
+        <!-- Business Info Header -->
+        <div id="business-header" class="business-header">
+            <div class="business-info">
+                <i class="fas fa-building"></i>
+                <span id="header-business-name">Business Name</span>
+            </div>
+            <div class="user-actions">
+                <span id="header-user-name">User Name</span>
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+    <!-- Navigation -->
+    <nav id="nav">
+        <button id="nav-home">Home</button>
+        <button id="nav-sales">Record Sale</button>
+        <button id="nav-purchases">Record Purchase</button>
+        <button id="nav-customer-debts">Customer Debts</button>
+        <button id="nav-supplier-debts">Supplier Debts</button>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="screen">
+        <h1>Trader Ledger</h1>
+        <p>Profit & Debt Tracking System</p>
+        
+        <!-- Key Metrics Cards -->
+        <div class="metrics-grid">
+            <div class="metric-card sales-card">
+                <div class="metric-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="metric-content">
+                    <label>Total Sales</label>
+                    <span id="total-sales">0.00</span>
+                </div>
+            </div>
+            <div class="metric-card purchases-card">
+                <div class="metric-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="metric-content">
+                    <label>Total Purchases</label>
+                    <span id="total-purchases">0.00</span>
+                </div>
+            </div>
+            <div class="metric-card profit-card">
+                <div class="metric-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="metric-content">
+                    <label>Net Profit</label>
+                    <span id="net-profit">0.00</span>
+                </div>
+            </div>
+            <div class="metric-card debt-card">
+                <div class="metric-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="metric-content">
+                    <label>Total Pending</label>
+                    <span id="total-pending">0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-container">
+            <div class="chart-card">
+                <h3>Sales vs Purchases</h3>
+                <canvas id="salesPurchasesChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Payment Status</h3>
+                <canvas id="paymentStatusChart"></canvas>
+            </div>
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-card full-width">
+                <h3>Cash Flow Overview</h3>
+                <canvas id="cashFlowChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Detailed Stats -->
+        <div class="dashboard-section">
+            <h3>Detailed Breakdown</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <label>Total Collected:</label>
+                    <span id="total-collected">0.00</span>
+                </div>
+                <div class="stat-card">
+                    <label>Customer Unpaid:</label>
+                    <span id="total-customer-unpaid">0.00</span>
+                </div>
+                <div class="stat-card">
+                    <label>Paid to Suppliers:</label>
+                    <span id="total-paid-suppliers">0.00</span>
+                </div>
+                <div class="stat-card">
+                    <label>Supplier Unpaid:</label>
+                    <span id="total-supplier-unpaid">0.00</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sales Section -->
+    <section id="sales" class="screen">
+        <h2>Record Sale</h2>
+        <form id="sale-form">
+            <label for="sale-customer">Customer Name:</label>
+            <input type="text" id="sale-customer" name="customer" required>
+
+            <label for="sale-email">Customer Email:</label>
+            <input type="email" id="sale-email" name="email" placeholder="customer@example.com" required>
+
+            <label for="sale-item">Item:</label>
+            <input type="text" id="sale-item" name="item" required>
+
+            <label for="sale-quantity">Quantity:</label>
+            <input type="number" id="sale-quantity" name="quantity" min="0" step="0.01" required>
+
+            <label for="sale-unit">Unit:</label>
+            <input type="text" id="sale-unit" name="unit" placeholder="kg, pcs, liters" required>
+
+            <label for="sale-price">Price per Unit:</label>
+            <input type="number" id="sale-price" name="price" min="0" step="0.01" required>
+
+            <label for="sale-status">Payment Status:</label>
+            <select id="sale-status" name="status" required>
+                <option value="paid">Paid</option>
+                <option value="unpaid">Unpaid</option>
+            </select>
+
+            <button type="submit">Add Sale</button>
+        </form>
+
+        <h3>Sales History</h3>
+        <table id="sales-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Price/Unit</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="sales-tbody">
+                <!-- Sales records will be added here -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Purchases Section -->
+    <section id="purchases" class="screen">
+        <h2>Record Purchase</h2>
+        <form id="purchase-form">
+            <label for="purchase-supplier">Supplier Name:</label>
+            <input type="text" id="purchase-supplier" name="supplier" required>
+
+            <label for="purchase-item">Item:</label>
+            <input type="text" id="purchase-item" name="item" required>
+
+            <label for="purchase-quantity">Quantity:</label>
+            <input type="number" id="purchase-quantity" name="quantity" min="0" step="0.01" required>
+
+            <label for="purchase-unit">Unit:</label>
+            <input type="text" id="purchase-unit" name="unit" placeholder="kg, pcs, liters" required>
+
+            <label for="purchase-price">Price per Unit:</label>
+            <input type="number" id="purchase-price" name="price" min="0" step="0.01" required>
+
+            <label for="purchase-status">Payment Status:</label>
+            <select id="purchase-status" name="status" required>
+                <option value="paid">Paid</option>
+                <option value="unpaid">Unpaid</option>
+            </select>
+
+            <button type="submit">Add Purchase</button>
+        </form>
+
+        <h3>Purchase History</h3>
+        <table id="purchases-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Supplier</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Price/Unit</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="purchases-tbody">
+                <!-- Purchase records will be added here -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Customer Debts Section -->
+    <section id="customer-debts" class="screen">
+        <h2>Customer Debts</h2>
+        <p>Track unpaid sales and customer balances</p>
+        <table id="customer-debts-table">
+            <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Email</th>
+                    <th>Total Debt</th>
+                    <th>Last Transaction</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="customer-debts-tbody">
+                <!-- Customer debt records will be added here -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Supplier Debts Section -->
+    <section id="supplier-debts" class="screen">
+        <h2>Supplier Debts</h2>
+        <p>Track unpaid purchases and supplier balances</p>
+        <table id="supplier-debts-table">
+            <thead>
+                <tr>
+                    <th>Supplier Name</th>
+                    <th>Total Debt</th>
+                    <th>Last Transaction</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="supplier-debts-tbody">
+                <!-- Supplier debt records will be added here -->
+            </tbody>
+        </table>
+    </section>
+
+    </div><!-- End of app-container -->
+
+    <script src="main.js"></script>
+</body>
+</html>
