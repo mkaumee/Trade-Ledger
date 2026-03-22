@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodejs", "npm"]
+
+[phases.install]
+cmds = ["cd trader-ledger && npm ci"]
+
+[phases.build]
+cmds = ["cd trader-ledger && npm run build"]
+
+[start]
+cmd = "cd trader-ledger && npm start"

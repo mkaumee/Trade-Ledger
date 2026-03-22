@@ -1,0 +1,24 @@
+{
+  "name": "trader-ledger-root",
+  "version": "1.0.0",
+  "description": "Trader Ledger - Profit & Debt Tracking System",
+  "main": "trader-ledger/server/server.js",
+  "scripts": {
+    "start": "cd trader-ledger && npm start",
+    "install": "cd trader-ledger && npm install",
+    "build": "cd trader-ledger && npm run build"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "keywords": [
+    "ledger",
+    "accounting",
+    "business",
+    "sales",
+    "purchases"
+  ],
+  "author": "",
+  "license": "MIT"
+}

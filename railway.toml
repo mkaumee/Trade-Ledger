@@ -1,0 +1,11 @@
+[build]
+builder = "NIXPACKS"
+buildCommand = "cd trader-ledger && npm ci"
+
+[deploy]
+startCommand = "cd trader-ledger && npm start"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[env]
+NODE_ENV = "production"
