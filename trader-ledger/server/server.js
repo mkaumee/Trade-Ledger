@@ -8,13 +8,25 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// CORS configuration for production
+const corsOptions = {
+    origin: process.env.CORS_ORIGIN || '*',
+    credentials: true
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..')));
 
+// Ensure database directory exists
+const dbDir = path.join(__dirname, '../database');
+if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
+}
+
 // Database setup
-const dbPath = path.join(__dirname, '../database/trader_ledger.db');
+const dbPath = process.env.DATABASE_PATH || path.join(__dirname, '../database/trader_ledger.db');
 const db = new sqlite3.Database(dbPath);
 
 // Initialize database with schema
@@ -258,20 +270,28 @@ app.get('/api/dashboard/:userId', async (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`\n🚀 Trader Ledger Server running on http://localhost:${PORT}`);
     console.log(`📊 Database: ${dbPath}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`\nPress Ctrl+C to stop the server\n`);
 });
 
 // Graceful shutdown
-process.on('SIGINT', () => {
-    db.close((err) => {
-        if (err) {
-            console.error('Error closing database:', err);
-        } else {
-            console.log('\n✅ Database connection closed');
-        }
-        process.exit(0);
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
+
+function shutdown() {
+    console.log('\n⏳ Shutting down gracefully...');
+    server.close(() => {
+        db.close((err) => {
+            if (err) {
+                console.error('Error closing database:', err);
+                process.exit(1);
+            } else {
+                console.log('✅ Database connection closed');
+                process.exit(0);
+            }
+        });
     });
-});
+}
