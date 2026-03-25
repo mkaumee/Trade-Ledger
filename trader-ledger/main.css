@@ -717,3 +717,42 @@ tbody:empty::after {
         flex-direction: column;
     }
 }
+
+/* Status Badges */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-paid {
+    background: #c8e6c9;
+    color: #2e7d32;
+}
+
+.status-unpaid {
+    background: #ffcdd2;
+    color: #c62828;
+}
+
+.status-partial {
+    background: #fff9c4;
+    color: #f57f17;
+}
+
+/* Partial Payment Fields */
+#sale-partial-payment,
+#purchase-partial-payment {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #fff3e0;
+    border-left: 4px solid #fb8c00;
+    border-radius: 8px;
+}
+
+#sale-partial-payment label,
+#purchase-partial-payment label {
+    margin-top: 0 !important;
+}

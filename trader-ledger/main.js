@@ -1,4 +1,23 @@
 /**
+ * Toggles the partial payment field visibility
+ * @param {string} type - 'sale' or 'purchase'
+ */
+function togglePartialPayment(type) {
+    const statusSelect = document.getElementById(`${type}-status`);
+    const partialDiv = document.getElementById(`${type}-partial-payment`);
+    const amountPaidInput = document.getElementById(`${type}-amount-paid`);
+    
+    if (statusSelect.value === 'partial') {
+        partialDiv.style.display = 'block';
+        amountPaidInput.required = true;
+    } else {
+        partialDiv.style.display = 'none';
+        amountPaidInput.required = false;
+        amountPaidInput.value = '';
+    }
+}
+
+/**
  * Navigation Logic
  * Handles switching between different sections of the app
  */
@@ -269,6 +288,22 @@ function addSale(event) {
     
     // Calculate total
     const total = quantity * pricePerUnit;
+    let amountPaid = 0;
+    let balance = total;
+    
+    // Handle partial payment
+    if (status === 'partial') {
+        amountPaid = parseFloat(document.getElementById('sale-amount-paid').value) || 0;
+        if (amountPaid <= 0 || amountPaid >= total) {
+            alert('Partial payment must be greater than 0 and less than total amount');
+            return;
+        }
+        balance = total - amountPaid;
+    } else if (status === 'paid') {
+        amountPaid = total;
+        balance = 0;
+    }
+    
     const date = new Date().toLocaleDateString();
     
     const sale = {
@@ -281,6 +316,8 @@ function addSale(event) {
         unit,
         pricePerUnit,
         total,
+        amountPaid,
+        balance,
         status
     };
     
@@ -289,6 +326,7 @@ function addSale(event) {
     saveData('sales', sales);
     
     document.getElementById('sale-form').reset();
+    document.getElementById('sale-partial-payment').style.display = 'none';
     displaySales();
     updateCustomerDebts();
     updateDashboard();
@@ -304,6 +342,9 @@ function displaySales() {
     
     sales.forEach(sale => {
         const row = document.createElement('tr');
+        const amountPaid = sale.amountPaid || (sale.status === 'paid' ? sale.total : 0);
+        const balance = sale.balance !== undefined ? sale.balance : (sale.status === 'paid' ? 0 : sale.total);
+        
         row.innerHTML = `
             <td>${sale.date}</td>
             <td>${sale.customer}</td>
@@ -313,7 +354,9 @@ function displaySales() {
             <td>${sale.unit}</td>
             <td>₦${sale.pricePerUnit.toFixed(2)}</td>
             <td>₦${sale.total.toFixed(2)}</td>
-            <td>${sale.status}</td>
+            <td>₦${amountPaid.toFixed(2)}</td>
+            <td>₦${balance.toFixed(2)}</td>
+            <td><span class="status-badge status-${sale.status}">${sale.status}</span></td>
         `;
         tbody.appendChild(row);
     });
@@ -379,6 +422,22 @@ function addPurchase(event) {
     
     // Calculate total
     const total = quantity * pricePerUnit;
+    let amountPaid = 0;
+    let balance = total;
+    
+    // Handle partial payment
+    if (status === 'partial') {
+        amountPaid = parseFloat(document.getElementById('purchase-amount-paid').value) || 0;
+        if (amountPaid <= 0 || amountPaid >= total) {
+            alert('Partial payment must be greater than 0 and less than total amount');
+            return;
+        }
+        balance = total - amountPaid;
+    } else if (status === 'paid') {
+        amountPaid = total;
+        balance = 0;
+    }
+    
     const date = new Date().toLocaleDateString();
     
     const purchase = {
@@ -390,6 +449,8 @@ function addPurchase(event) {
         unit,
         pricePerUnit,
         total,
+        amountPaid,
+        balance,
         status
     };
     
@@ -398,6 +459,7 @@ function addPurchase(event) {
     saveData('purchases', purchases);
     
     document.getElementById('purchase-form').reset();
+    document.getElementById('purchase-partial-payment').style.display = 'none';
     displayPurchases();
     updateSupplierDebts();
     updateDashboard();
@@ -413,6 +475,9 @@ function displayPurchases() {
     
     purchases.forEach(purchase => {
         const row = document.createElement('tr');
+        const amountPaid = purchase.amountPaid || (purchase.status === 'paid' ? purchase.total : 0);
+        const balance = purchase.balance !== undefined ? purchase.balance : (purchase.status === 'paid' ? 0 : purchase.total);
+        
         row.innerHTML = `
             <td>${purchase.date}</td>
             <td>${purchase.supplier}</td>
@@ -421,7 +486,9 @@ function displayPurchases() {
             <td>${purchase.unit}</td>
             <td>₦${purchase.pricePerUnit.toFixed(2)}</td>
             <td>₦${purchase.total.toFixed(2)}</td>
-            <td>${purchase.status}</td>
+            <td>₦${amountPaid.toFixed(2)}</td>
+            <td>₦${balance.toFixed(2)}</td>
+            <td><span class="status-badge status-${purchase.status}">${purchase.status}</span></td>
         `;
         tbody.appendChild(row);
     });
