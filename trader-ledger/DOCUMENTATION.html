@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trader Ledger - Complete Project Documentation</title>
+    <style>
+        /* PDF-Ready Styles */
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20mm;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 32pt;
+            color: #2e7d32;
+            margin-bottom: 10pt;
+            page-break-after: avoid;
+            border-bottom: 3pt solid #2e7d32;
+            padding-bottom: 10pt;
+        }
+
+        h2 {
+            font-size: 24pt;
+            color: #2e7d32;
+            margin-top: 30pt;
+            margin-bottom: 15pt;
+            page-break-after: avoid;
+            border-bottom: 2pt solid #66bb6a;
+            padding-bottom: 8pt;
+        }
+
+        h3 {
+            font-size: 18pt;
+            color: #388e3c;
+            margin-top: 20pt;
+            margin-bottom: 10pt;
+            page-break-after: avoid;
+        }
+
+        h4 {
+            font-size: 14pt;
+            color: #43a047;
+            margin-top: 15pt;
+            margin-bottom: 8pt;
+            page-break-after: avoid;
+        }
+
+        p {
+            margin-bottom: 10pt;
+            text-align: justify;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 20pt;
+            margin-bottom: 10pt;
+        }
+
+        li {
+            margin-bottom: 5pt;
+        }
+
+        /* Code Blocks */
+        code {
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+            padding: 2pt 4pt;
+            border-radius: 3pt;
+            font-size: 10pt;
+        }
+
+        pre {
+            background: #f5f5f5;
+            border-left: 4pt solid #2e7d32;
+            padding: 12pt;
+            margin: 10pt 0;
+            overflow-x: auto;
+            page-break-inside: avoid;
+            font-family: 'Courier New', monospace;
+            font-size: 9pt;
+            line-height: 1.4;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15pt 0;
+            page-break-inside: avoid;
+        }
+
+        th, td {
+            border: 1pt solid #ddd;
+            padding: 8pt;
+            text-align: left;
+        }
+
+        th {
+            background: #2e7d32;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* Special Boxes */
+        .info-box {
+            background: #e8f5e9;
+            border-left: 4pt solid #43a047;
+            padding: 12pt;
+            margin: 15pt 0;
+            page-break-inside: avoid;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4pt solid #fb8c00;
+            padding: 12pt;
+            margin: 15pt 0;
+            page-break-inside: avoid;
+        }
+
+        .code-box {
+            background: #f5f5f5;
+            border: 1pt solid #ddd;
+            padding: 12pt;
+            margin: 15pt 0;
+            page-break-inside: avoid;
+        }
+
+        /* Links */
+        a {
+            color: #2e7d32;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Page Breaks */
+        .page-break {
+            page-break-after: always;
+        }
+
+        .no-break {
+            page-break-inside: avoid;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: #f9f9f9;
+            border: 1pt solid #ddd;
+            padding: 20pt;
+            margin: 20pt 0;
+            page-break-after: always;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            border-bottom: none;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 8pt;
+        }
+
+        .toc a {
+            color: #2e7d32;
+            text-decoration: none;
+        }
+
+        /* Cover Page */
+        .cover {
+            text-align: center;
+            padding: 100pt 0;
+            page-break-after: always;
+        }
+
+        .cover h1 {
+            font-size: 48pt;
+            border-bottom: none;
+            margin-bottom: 20pt;
+        }
+
+        .cover .subtitle {
+            font-size: 24pt;
+            color: #666;
+            margin-bottom: 40pt;
+        }
+
+        .cover .version {
+            font-size: 14pt;
+            color: #999;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            a {
+                color: #000;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: #0000ff; }
+        .string { color: #a31515; }
+        .comment { color: #008000; }
+        .function { color: #795e26; }
+    </style>
+</head>
+<body>
+
+
+    <!-- Cover Page -->
+    <div class="cover">
+        <h1>Trader Ledger</h1>
+        <div class="subtitle">Complete Project Documentation</div>
+        <div class="version">
+            <p>Version 1.0.0</p>
+            <p>Profit & Debt Tracking System for Businesses</p>
+            <p style="margin-top: 40pt;">2024</p>
+        </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#overview">1. Project Overview</a></li>
+            <li><a href="#tech-stack">2. Technology Stack</a></li>
+            <li><a href="#architecture">3. Architecture</a></li>
+            <li><a href="#structure">4. Project Structure</a></li>
+            <li><a href="#database">5. Database Design</a></li>
+            <li><a href="#backend">6. Backend Implementation</a></li>
+            <li><a href="#api">7. API Documentation</a></li>
+            <li><a href="#frontend">8. Frontend Implementation</a></li>
+            <li><a href="#styling">9. Styling and UI Design</a></li>
+            <li><a href="#deployment">10. Deployment</a></li>
+            <li><a href="#development">11. Development Workflow</a></li>
+            <li><a href="#features">12. Features Breakdown</a></li>
+            <li><a href="#security">13. Security Considerations</a></li>
+            <li><a href="#future">14. Future Enhancements</a></li>
+            <li><a href="#troubleshooting">15. Troubleshooting</a></li>
+            <li><a href="#glossary">16. Glossary</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div id="overview" class="no-break">
+        <h2>1. Project Overview</h2>
+        
+        <p>Trader Ledger is a full-stack web application designed for small to medium businesses to track sales, purchases, customer debts, and supplier debts with real-time analytics and visualizations.</p>
+
+        <h3>Purpose</h3>
+        <ul>
+            <li>Track sales transactions with customer information</li>
+            <li>Record purchases from suppliers</li>
+            <li>Monitor unpaid customer balances (accounts receivable)</li>
+            <li>Track outstanding supplier payments (accounts payable)</li>
+            <li>Visualize business metrics through interactive charts</li>
+            <li>Send payment reminders to customers via email</li>
+        </ul>
+
+        <h3>Target Users</h3>
+        <p>Small to medium businesses, particularly in retail, wholesale, services, and manufacturing sectors.</p>
+    </div>
+
+    <div id="tech-stack" class="page-break">
+        <h2>2. Technology Stack</h2>
+
+        <h3>Backend Technologies</h3>
+        <table>
+            <tr>
+                <th>Technology</th>
+                <th>Version</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>Node.js</td>
+                <td>v14+</td>
+                <td>JavaScript runtime environment</td>
+            </tr>
+            <tr>
+                <td>Express.js</td>
+                <td>v4.18.2</td>
+                <td>Web application framework</td>
+            </tr>
+            <tr>
+                <td>SQLite3</td>
+                <td>v5.1.6</td>
+                <td>Embedded database</td>
+            </tr>
+            <tr>
+                <td>bcryptjs</td>
+                <td>v2.4.3</td>
+                <td>Password hashing</td>
+            </tr>
+            <tr>
+                <td>cors</td>
+                <td>v2.8.5</td>
+                <td>Cross-origin resource sharing</td>
+            </tr>
+        </table>
+
+        <h3>Frontend Technologies</h3>
+        <table>
+            <tr>
+                <th>Technology</th>
+                <th>Version</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>HTML5</td>
+                <td>-</td>
+                <td>Semantic markup</td>
+            </tr>
+            <tr>
+                <td>CSS3</td>
+                <td>-</td>
+                <td>Styling and layout</td>
+            </tr>
+            <tr>
+                <td>JavaScript (ES6+)</td>
+                <td>-</td>
+                <td>Client-side logic</td>
+            </tr>
+            <tr>
+                <td>Chart.js</td>
+                <td>v4.4.0</td>
+                <td>Data visualization</td>
+            </tr>
+            <tr>
+                <td>Font Awesome</td>
+                <td>v6.4.0</td>
+                <td>Icons</td>
+            </tr>
+        </table>
+
+        <h3>Development Tools</h3>
+        <ul>
+            <li><strong>nodemon</strong> v3.0.1 - Auto-restart server during development</li>
+        </ul>
+
+        <h3>Deployment Platform</h3>
+        <ul>
+            <li><strong>Railway.app</strong> - Cloud platform for deployment</li>
+            <li><strong>Nixpacks</strong> - Build system</li>
+            <li><strong>Procfile</strong> - Process management</li>
+        </ul>
+    </div>
+
+
+    <div id="architecture" class="page-break">
+        <h2>3. Architecture</h2>
+
+        <h3>Application Architecture</h3>
+        <div class="info-box">
+            <p><strong>Three-Tier Architecture:</strong></p>
+            <ul>
+                <li><strong>Presentation Layer:</strong> HTML/CSS/JavaScript (Client-side)</li>
+                <li><strong>Application Layer:</strong> Express.js REST API (Server-side)</li>
+                <li><strong>Data Layer:</strong> SQLite3 Database</li>
+            </ul>
+        </div>
+
+        <h3>Request Flow</h3>
+        <ol>
+            <li><strong>User Authentication:</strong>
+                <ul>
+                    <li>User visits index.html → redirects to login.html</li>
+                    <li>User submits credentials → auth.js sends POST to /api/auth/login</li>
+                    <li>Server validates credentials → returns user object</li>
+                    <li>Client stores user in localStorage → redirects to app.html</li>
+                </ul>
+            </li>
+            <li><strong>Data Operations:</strong>
+                <ul>
+                    <li>User interacts with forms in app.html</li>
+                    <li>main.js captures form submissions</li>
+                    <li>AJAX requests sent to Express API endpoints</li>
+                    <li>Server queries SQLite database</li>
+                    <li>Server returns JSON response</li>
+                    <li>Client updates UI dynamically</li>
+                </ul>
+            </li>
+            <li><strong>Session Management:</strong>
+                <ul>
+                    <li>User data stored in browser's localStorage</li>
+                    <li>Each page checks for valid session on load</li>
+                    <li>Logout clears localStorage and redirects to login</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div id="structure" class="page-break">
+        <h2>4. Project Structure</h2>
+
+        <pre>
+trader-ledger/
+│
+├── database/
+│   ├── schema.sql              # Database schema definition
+│   └── trader_ledger.db        # SQLite database file (auto-created)
+│
+├── server/
+│   └── server.js               # Express.js backend server
+│
+├── node_modules/               # Dependencies (auto-generated)
+│
+├── index.html                  # Entry point (redirects to login)
+├── login.html                  # Authentication page
+├── app.html                    # Main application interface
+│
+├── auth.js                     # Authentication logic
+├── auth.css                    # Authentication page styles
+├── main.js                     # Main application logic (983 lines)
+├── main.css                    # Main application styles
+│
+├── favicon.svg                 # Application icon
+│
+├── package.json                # Node.js dependencies and scripts
+├── package-lock.json           # Locked dependency versions
+│
+├── nixpacks.toml               # Nixpacks build configuration
+├── Procfile                    # Process definition for deployment
+├── railway.json                # Railway platform configuration
+├── .railwayignore              # Files to ignore during deployment
+├── .gitignore                  # Git ignore rules
+│
+├── start.sh                    # Linux/Mac startup script
+├── start.bat                   # Windows startup script
+│
+└── README.md                   # Project documentation
+        </pre>
+
+        <h3>Key Files Description</h3>
+        <table>
+            <tr>
+                <th>File</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>server/server.js</td>
+                <td>Express server with all API routes and database logic</td>
+            </tr>
+            <tr>
+                <td>database/schema.sql</td>
+                <td>SQL schema for creating tables and indexes</td>
+            </tr>
+            <tr>
+                <td>main.js</td>
+                <td>Core application logic for all features (983 lines)</td>
+            </tr>
+            <tr>
+                <td>auth.js</td>
+                <td>Handles login/registration logic and API communication</td>
+            </tr>
+            <tr>
+                <td>app.html</td>
+                <td>Main application with dashboard, sales, purchases, and debt tracking</td>
+            </tr>
+            <tr>
+                <td>login.html</td>
+                <td>Authentication interface with login and registration forms</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div id="database" class="page-break">
+        <h2>5. Database Design</h2>
+
+        <h3>Schema Overview</h3>
+        <p>The application uses SQLite3 with three main tables for data storage.</p>
+
+        <h3>Users Table</h3>
+        <p>Stores business/user account information.</p>
+        <pre>
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    business_name VARCHAR(255) NOT NULL,
+    business_type VARCHAR(50) NOT NULL,
+    owner_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    address TEXT NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+        </pre>
+
+        <h3>Sales Table</h3>
+        <p>Records all sales transactions.</p>
+        <pre>
+CREATE TABLE sales (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    customer_name VARCHAR(255) NOT NULL,
+    customer_email VARCHAR(255),
+    item VARCHAR(255) NOT NULL,
+    quantity DECIMAL(10, 2) NOT NULL,
+    unit VARCHAR(50) NOT NULL,
+    price_per_unit DECIMAL(10, 2) NOT NULL,
+    total DECIMAL(10, 2) NOT NULL,
+    amount_paid DECIMAL(10, 2) DEFAULT 0,
+    balance DECIMAL(10, 2) DEFAULT 0,
+    status VARCHAR(20) NOT NULL DEFAULT 'unpaid',
+    sale_date DATE NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+        </pre>
+
+        <h3>Purchases Table</h3>
+        <p>Records all purchase transactions.</p>
+        <pre>
+CREATE TABLE purchases (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    supplier_name VARCHAR(255) NOT NULL,
+    item VARCHAR(255) NOT NULL,
+    quantity DECIMAL(10, 2) NOT NULL,
+    unit VARCHAR(50) NOT NULL,
+    price_per_unit DECIMAL(10, 2) NOT NULL,
+    total DECIMAL(10, 2) NOT NULL,
+    amount_paid DECIMAL(10, 2) DEFAULT 0,
+    balance DECIMAL(10, 2) DEFAULT 0,
+    status VARCHAR(20) NOT NULL DEFAULT 'unpaid',
+    purchase_date DATE NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+        </pre>
+
+        <h3>Database Indexes</h3>
+        <p>Performance optimization indexes:</p>
+        <pre>
+CREATE INDEX idx_sales_user_id ON sales(user_id);
+CREATE INDEX idx_sales_status ON sales(status);
+CREATE INDEX idx_purchases_user_id ON purchases(user_id);
+CREATE INDEX idx_purchases_status ON purchases(status);
+CREATE INDEX idx_users_email ON users(email);
+        </pre>
+
+        <div class="info-box">
+            <h4>Data Isolation</h4>
+            <ul>
+                <li>Each business (user) has isolated data via user_id foreign key</li>
+                <li>Cascade delete ensures data cleanup when user is deleted</li>
+                <li>Email uniqueness prevents duplicate accounts</li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div id="backend" class="page-break">
+        <h2>6. Backend Implementation</h2>
+
+        <h3>Server Setup</h3>
+        <p>The backend is built with Express.js and includes middleware for CORS, JSON parsing, and static file serving.</p>
+
+        <h4>Dependencies and Configuration</h4>
+        <pre>
+const express = require('express');
+const sqlite3 = require('sqlite3').verbose();
+const cors = require('cors');
+const bcrypt = require('bcryptjs');
+const path = require('path');
+const fs = require('fs');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+        </pre>
+
+        <h4>Middleware Stack</h4>
+        <ol>
+            <li><strong>CORS:</strong> Enables cross-origin requests</li>
+            <li><strong>JSON Parser:</strong> Parses incoming JSON payloads</li>
+            <li><strong>Static Files:</strong> Serves frontend files</li>
+        </ol>
+
+        <h3>Database Initialization</h3>
+        <pre>
+// Ensure database directory exists
+const dbDir = path.join(__dirname, '../database');
+if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
+}
+
+// Connect to database
+const dbPath = process.env.DATABASE_PATH || 
+               path.join(__dirname, '../database/trader_ledger.db');
+const db = new sqlite3.Database(dbPath);
+
+// Execute schema
+const schemaPath = path.join(__dirname, '../database/schema.sql');
+const schema = fs.readFileSync(schemaPath, 'utf8');
+db.exec(schema);
+        </pre>
+
+        <h3>Helper Functions</h3>
+        <p>Three promise-based wrappers for SQLite operations:</p>
+
+        <h4>1. runQuery - Execute INSERT/UPDATE/DELETE</h4>
+        <pre>
+const runQuery = (query, params = []) => {
+    return new Promise((resolve, reject) => {
+        db.run(query, params, function(err) {
+            if (err) reject(err);
+            else resolve({ id: this.lastID, changes: this.changes });
+        });
+    });
+};
+        </pre>
+
+        <h4>2. getQuery - Get single row</h4>
+        <pre>
+const getQuery = (query, params = []) => {
+    return new Promise((resolve, reject) => {
+        db.get(query, params, (err, row) => {
+            if (err) reject(err);
+            else resolve(row);
+        });
+    });
+};
+        </pre>
+
+        <h4>3. allQuery - Get multiple rows</h4>
+        <pre>
+const allQuery = (query, params = []) => {
+    return new Promise((resolve, reject) => {
+        db.all(query, params, (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+        });
+    });
+};
+        </pre>
+
+        <h3>Graceful Shutdown</h3>
+        <p>Ensures proper cleanup of database connections:</p>
+        <pre>
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
+
+function shutdown() {
+    server.close(() => {
+        db.close((err) => {
+            if (err) {
+                console.error('Error closing database:', err);
+                process.exit(1);
+            } else {
+                console.log('Database connection closed');
+                process.exit(0);
+            }
+        });
+    });
+}
+        </pre>
+    </div>
+
+
+    <div id="api" class="page-break">
+        <h2>7. API Documentation</h2>
+
+        <h3>Authentication Endpoints</h3>
+
+        <h4>POST /api/auth/register</h4>
+        <p>Register a new business account.</p>
+        
+        <div class="code-box">
+            <p><strong>Request Body:</strong></p>
+            <pre>
+{
+  "businessName": "ABC Store",
+  "businessType": "retail",
+  "ownerName": "John Doe",
+  "email": "john@example.com",
+  "phone": "+1234567890",
+  "address": "123 Main St",
+  "password": "securepassword"
+}
+            </pre>
+            
+            <p><strong>Response (Success - 200):</strong></p>
+            <pre>
+{
+  "success": true,
+  "message": "Registration successful",
+  "userId": 1
+}
+            </pre>
+        </div>
+
+        <h4>POST /api/auth/login</h4>
+        <p>Authenticate user and get session data.</p>
+        
+        <div class="code-box">
+            <p><strong>Request Body:</strong></p>
+            <pre>
+{
+  "email": "john@example.com",
+  "password": "securepassword"
+}
+            </pre>
+            
+            <p><strong>Response (Success - 200):</strong></p>
+            <pre>
+{
+  "success": true,
+  "user": {
+    "id": 1,
+    "business_name": "ABC Store",
+    "business_type": "retail",
+    "owner_name": "John Doe",
+    "email": "john@example.com",
+    "phone": "+1234567890",
+    "address": "123 Main St"
+  }
+}
+            </pre>
+        </div>
+
+        <h3>Sales Endpoints</h3>
+
+        <h4>GET /api/sales/:userId</h4>
+        <p>Get all sales for a specific user.</p>
+
+        <h4>POST /api/sales</h4>
+        <p>Add a new sale.</p>
+        
+        <div class="code-box">
+            <p><strong>Request Body:</strong></p>
+            <pre>
+{
+  "userId": 1,
+  "customer": "Jane Smith",
+  "email": "jane@example.com",
+  "item": "Product A",
+  "quantity": 10,
+  "unit": "pcs",
+  "pricePerUnit": 50.00,
+  "total": 500.00,
+  "status": "paid",
+  "date": "2024-01-15"
+}
+            </pre>
+        </div>
+
+        <h4>PUT /api/sales/:id</h4>
+        <p>Update sale status.</p>
+
+        <h4>PUT /api/sales/customer/:userId/:customerName</h4>
+        <p>Mark all unpaid sales for a customer as paid.</p>
+
+        <h3>Purchase Endpoints</h3>
+
+        <h4>GET /api/purchases/:userId</h4>
+        <p>Get all purchases for a specific user.</p>
+
+        <h4>POST /api/purchases</h4>
+        <p>Add a new purchase.</p>
+
+        <h4>PUT /api/purchases/supplier/:userId/:supplierName</h4>
+        <p>Mark all unpaid purchases for a supplier as paid.</p>
+
+        <h3>Dashboard Endpoint</h3>
+
+        <h4>GET /api/dashboard/:userId</h4>
+        <p>Get aggregated statistics for dashboard.</p>
+        
+        <div class="code-box">
+            <p><strong>Response (200):</strong></p>
+            <pre>
+{
+  "sales": {
+    "total_sales": 5000.00,
+    "total_collected": 4500.00,
+    "total_unpaid": 500.00
+  },
+  "purchases": {
+    "total_purchases": 3000.00,
+    "total_paid": 2800.00,
+    "total_unpaid": 200.00
+  }
+}
+            </pre>
+        </div>
+    </div>
+
+
+    <div id="frontend" class="page-break">
+        <h2>8. Frontend Implementation</h2>
+
+        <h3>Authentication System (auth.js)</h3>
+
+        <h4>API URL Detection</h4>
+        <p>Automatically detects environment:</p>
+        <pre>
+const API_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000/api' 
+    : `${window.location.origin}/api`;
+        </pre>
+
+        <h4>Login Flow</h4>
+        <ol>
+            <li>User submits login form</li>
+            <li>handleLogin() captures form data</li>
+            <li>Sends POST request to /api/auth/login</li>
+            <li>On success: Stores user object in localStorage and redirects to app.html</li>
+            <li>On failure: Shows error alert</li>
+        </ol>
+
+        <h3>Main Application (main.js)</h3>
+
+        <h4>Navigation System</h4>
+        <p>Single-page application navigation with five main sections:</p>
+        <ul>
+            <li><strong>home:</strong> Dashboard with metrics and charts</li>
+            <li><strong>sales:</strong> Record sales form and history</li>
+            <li><strong>purchases:</strong> Record purchases form and history</li>
+            <li><strong>customer-debts:</strong> View and manage customer debts</li>
+            <li><strong>supplier-debts:</strong> View and manage supplier debts</li>
+        </ul>
+
+        <h4>Sales Management</h4>
+        <p>Key features:</p>
+        <ul>
+            <li>Form validation for all inputs</li>
+            <li>Automatic total calculation</li>
+            <li>Support for partial payments</li>
+            <li>Real-time UI updates</li>
+            <li>Status tracking (paid, unpaid, partial)</li>
+        </ul>
+
+        <h4>Customer Debt Tracking</h4>
+        <p>Features include:</p>
+        <ul>
+            <li>Automatic debt aggregation by customer</li>
+            <li>Email notification system with multiple sending options</li>
+            <li>Bulk payment marking</li>
+            <li>Last transaction date tracking</li>
+        </ul>
+
+        <h3>Email Notification System</h3>
+        <p>The application provides multiple ways to send payment reminders:</p>
+        <ul>
+            <li><strong>Gmail Web:</strong> Opens Gmail compose in browser</li>
+            <li><strong>Default Email Client:</strong> Uses mailto: protocol</li>
+            <li><strong>Clipboard Copy:</strong> Copies email content for manual sending</li>
+        </ul>
+
+        <div class="info-box">
+            <h4>Email Template</h4>
+            <p>Pre-formatted payment reminder includes:</p>
+            <ul>
+                <li>Customer name and outstanding balance</li>
+                <li>Business contact information</li>
+                <li>Professional greeting and closing</li>
+                <li>Payment instructions</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="styling" class="page-break">
+        <h2>9. Styling and UI Design</h2>
+
+        <h3>Design System</h3>
+
+        <h4>Color Palette</h4>
+        <table>
+            <tr>
+                <th>Color</th>
+                <th>Hex Code</th>
+                <th>Usage</th>
+            </tr>
+            <tr>
+                <td>Primary Green</td>
+                <td>#2e7d32, #43a047, #66bb6a</td>
+                <td>Headers, buttons, primary actions</td>
+            </tr>
+            <tr>
+                <td>Secondary Orange</td>
+                <td>#fb8c00, #ffe0b2</td>
+                <td>Purchases, warnings</td>
+            </tr>
+            <tr>
+                <td>Teal</td>
+                <td>#00897b, #b2dfdb</td>
+                <td>Profit indicators</td>
+            </tr>
+            <tr>
+                <td>Red</td>
+                <td>#e53935, #ffcdd2</td>
+                <td>Debts, unpaid status</td>
+            </tr>
+            <tr>
+                <td>Yellow</td>
+                <td>#ffc107, #fff9c4</td>
+                <td>Partial payments</td>
+            </tr>
+        </table>
+
+        <h4>Typography</h4>
+        <ul>
+            <li><strong>Font Family:</strong> 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif</li>
+            <li><strong>Line Height:</strong> 1.6 for optimal readability</li>
+            <li><strong>Headings:</strong> Bold with green color scheme</li>
+        </ul>
+
+        <h3>Key CSS Features</h3>
+
+        <h4>Gradients</h4>
+        <p>Used throughout for modern, polished look:</p>
+        <pre>
+background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+        </pre>
+
+        <h4>Animations</h4>
+        <p>Smooth fade-in effect for section transitions:</p>
+        <pre>
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+        </pre>
+
+        <h4>Responsive Grid</h4>
+        <p>Auto-fit grid for flexible layouts:</p>
+        <pre>
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+        </pre>
+
+        <h3>Responsive Design</h3>
+        <p>Three breakpoints for optimal viewing:</p>
+        <ul>
+            <li><strong>Desktop (> 768px):</strong> Multi-column grids, full navigation</li>
+            <li><strong>Tablet (≤ 768px):</strong> Adjusted layouts, 2-column navigation</li>
+            <li><strong>Mobile (≤ 480px):</strong> Single column, stacked elements</li>
+        </ul>
+    </div>
+
+
+    <div id="deployment" class="page-break">
+        <h2>10. Deployment</h2>
+
+        <h3>Railway Platform</h3>
+        <p>Railway is a modern platform-as-a-service (PaaS) that simplifies deployment with automatic builds and HTTPS support.</p>
+
+        <h4>Configuration Files</h4>
+
+        <p><strong>1. nixpacks.toml</strong> - Defines the build process:</p>
+        <pre>
+[phases.setup]
+nixPkgs = ["nodejs", "npm"]
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm start"
+        </pre>
+
+        <p><strong>2. Procfile</strong> - Defines the process to run:</p>
+        <pre>
+web: npm start
+        </pre>
+
+        <h4>Deployment Steps</h4>
+        <ol>
+            <li><strong>Connect Repository:</strong> Push code to GitHub and connect to Railway</li>
+            <li><strong>Automatic Build:</strong> Railway reads nixpacks.toml and builds automatically</li>
+            <li><strong>Environment Variables:</strong> Set PORT, DATABASE_PATH, CORS_ORIGIN in Railway dashboard</li>
+            <li><strong>Database Persistence:</strong> SQLite file stored in Railway volume</li>
+            <li><strong>Domain:</strong> Railway provides default *.railway.app domain</li>
+        </ol>
+
+        <h3>Alternative Deployment Options</h3>
+
+        <h4>1. Heroku</h4>
+        <ul>
+            <li>Use Procfile</li>
+            <li>Set environment variables</li>
+            <li>Add SQLite buildpack or use PostgreSQL</li>
+        </ul>
+
+        <h4>2. DigitalOcean App Platform</h4>
+        <ul>
+            <li>Connect GitHub repo</li>
+            <li>Configure build command: npm install</li>
+            <li>Configure run command: npm start</li>
+        </ul>
+
+        <h4>3. Docker</h4>
+        <p>Create Dockerfile:</p>
+        <pre>
+FROM node:14
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --production
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+        </pre>
+
+        <div class="info-box">
+            <h4>Environment Detection</h4>
+            <p>The frontend automatically detects environment:</p>
+            <ul>
+                <li><strong>Local:</strong> Uses http://localhost:3000/api</li>
+                <li><strong>Production:</strong> Uses same origin (Railway domain)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="development" class="page-break">
+        <h2>11. Development Workflow</h2>
+
+        <h3>Local Setup</h3>
+
+        <h4>Prerequisites</h4>
+        <ul>
+            <li>Node.js v14 or higher</li>
+            <li>npm v6 or higher</li>
+            <li>Git (optional)</li>
+        </ul>
+
+        <h4>Installation Steps</h4>
+        <ol>
+            <li><strong>Clone or Download:</strong>
+                <pre>git clone &lt;repository-url&gt;
+cd trader-ledger</pre>
+            </li>
+            <li><strong>Install Dependencies:</strong>
+                <pre>npm install</pre>
+            </li>
+            <li><strong>Start Development Server:</strong>
+                <pre>npm run dev</pre>
+            </li>
+            <li><strong>Access Application:</strong>
+                <p>Open browser to http://localhost:3000</p>
+            </li>
+        </ol>
+
+        <h3>NPM Scripts</h3>
+        <table>
+            <tr>
+                <th>Script</th>
+                <th>Command</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>start</td>
+                <td>node server/server.js</td>
+                <td>Production mode (manual restart required)</td>
+            </tr>
+            <tr>
+                <td>dev</td>
+                <td>nodemon server/server.js</td>
+                <td>Development mode (auto-restart on changes)</td>
+            </tr>
+            <tr>
+                <td>build</td>
+                <td>echo 'No build step required'</td>
+                <td>Placeholder for build step</td>
+            </tr>
+        </table>
+
+        <h3>Startup Scripts</h3>
+
+        <h4>Linux/Mac (start.sh)</h4>
+        <pre>
+#!/bin/bash
+# Check Node.js installation
+# Create database directory
+# Install dependencies if needed
+# Start server
+PORT=${1:-3000} npm start
+        </pre>
+
+        <h4>Windows (start.bat)</h4>
+        <pre>
+@echo off
+echo Starting Trader Ledger...
+where node >nul 2>nul
+if not exist "node_modules" npm install
+npm start
+        </pre>
+
+        <h3>Development Best Practices</h3>
+        <ul>
+            <li>Use nodemon for auto-restart during development</li>
+            <li>Test on multiple browsers (Chrome, Firefox, Safari)</li>
+            <li>Verify responsive design on different screen sizes</li>
+            <li>Check database persistence after server restart</li>
+            <li>Test all API endpoints with different data</li>
+        </ul>
+    </div>
+
+
+    <div id="features" class="page-break">
+        <h2>12. Features Breakdown</h2>
+
+        <h3>1. User Authentication</h3>
+        <ul>
+            <li>Business information collection</li>
+            <li>Password hashing with bcrypt (10 salt rounds)</li>
+            <li>Email uniqueness validation</li>
+            <li>Session management via localStorage</li>
+            <li>Automatic redirect on authentication</li>
+        </ul>
+
+        <h3>2. Sales Management</h3>
+        <p><strong>Data Captured:</strong></p>
+        <ul>
+            <li>Customer name and email</li>
+            <li>Item description</li>
+            <li>Quantity and unit of measurement</li>
+            <li>Price per unit and total amount</li>
+            <li>Amount paid and balance remaining</li>
+            <li>Payment status (paid, unpaid, partial)</li>
+            <li>Sale date</li>
+        </ul>
+
+        <h3>3. Purchase Management</h3>
+        <p><strong>Features:</strong></p>
+        <ul>
+            <li>Record purchases from suppliers</li>
+            <li>Track inventory costs</li>
+            <li>Support for partial payments</li>
+            <li>Payment status tracking</li>
+            <li>Purchase history table</li>
+        </ul>
+
+        <h3>4. Customer Debt Tracking</h3>
+        <ul>
+            <li>Automatic debt aggregation by customer</li>
+            <li>View all unpaid customer balances</li>
+            <li>Mark customer debts as paid (bulk update)</li>
+            <li>Email notification system with professional template</li>
+            <li>Last transaction date tracking</li>
+        </ul>
+
+        <h3>5. Supplier Debt Tracking</h3>
+        <ul>
+            <li>Automatic debt aggregation by supplier</li>
+            <li>View all unpaid supplier balances</li>
+            <li>Mark supplier debts as paid (bulk update)</li>
+            <li>Last transaction date tracking</li>
+        </ul>
+
+        <h3>6. Dashboard Analytics</h3>
+
+        <h4>Metrics Displayed</h4>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Total Sales</td>
+                <td>Sum of all sales transactions</td>
+            </tr>
+            <tr>
+                <td>Total Purchases</td>
+                <td>Sum of all purchase transactions</td>
+            </tr>
+            <tr>
+                <td>Net Profit</td>
+                <td>Collected from customers - Paid to suppliers</td>
+            </tr>
+            <tr>
+                <td>Total Pending</td>
+                <td>Customer unpaid + Supplier unpaid</td>
+            </tr>
+            <tr>
+                <td>Total Collected</td>
+                <td>Amount received from customers</td>
+            </tr>
+            <tr>
+                <td>Customer Unpaid</td>
+                <td>Outstanding customer balances</td>
+            </tr>
+            <tr>
+                <td>Paid to Suppliers</td>
+                <td>Amount paid to suppliers</td>
+            </tr>
+            <tr>
+                <td>Supplier Unpaid</td>
+                <td>Outstanding supplier balances</td>
+            </tr>
+        </table>
+
+        <h4>Visualizations</h4>
+        <ol>
+            <li><strong>Sales vs Purchases Bar Chart:</strong> Compares total sales to total purchases</li>
+            <li><strong>Payment Status Doughnut Chart:</strong> Shows distribution of collected, unpaid, and paid amounts</li>
+            <li><strong>Cash Flow Line Chart:</strong> Displays trend across all financial metrics</li>
+        </ol>
+
+        <h3>7. Data Persistence</h3>
+        <ul>
+            <li><strong>LocalStorage (Client-side):</strong> User session data</li>
+            <li><strong>SQLite Database (Server-side):</strong> Permanent data storage with ACID compliance</li>
+        </ul>
+
+        <h3>8. Responsive Design</h3>
+        <ul>
+            <li><strong>Mobile:</strong> Touch-friendly interface, stacked layouts</li>
+            <li><strong>Tablet:</strong> Optimized grid layouts, balanced spacing</li>
+            <li><strong>Desktop:</strong> Multi-column layouts, large charts, hover effects</li>
+        </ul>
+    </div>
+
+
+    <div id="security" class="page-break">
+        <h2>13. Security Considerations</h2>
+
+        <h3>Implemented Security Measures</h3>
+
+        <table>
+            <tr>
+                <th>Security Feature</th>
+                <th>Implementation</th>
+            </tr>
+            <tr>
+                <td>Password Security</td>
+                <td>Bcrypt hashing with 10 salt rounds, never stored in plain text</td>
+            </tr>
+            <tr>
+                <td>SQL Injection Prevention</td>
+                <td>Parameterized queries throughout, no string concatenation</td>
+            </tr>
+            <tr>
+                <td>CORS Configuration</td>
+                <td>Configurable origin, credentials support</td>
+            </tr>
+            <tr>
+                <td>Data Isolation</td>
+                <td>User-specific data queries, foreign key constraints</td>
+            </tr>
+            <tr>
+                <td>Session Management</td>
+                <td>Client-side session storage, automatic session checks</td>
+            </tr>
+        </table>
+
+        <h3>Security Limitations & Recommendations</h3>
+
+        <div class="warning-box">
+            <h4>Current Limitations</h4>
+            <ol>
+                <li><strong>No JWT/Token Authentication</strong>
+                    <ul>
+                        <li>Uses localStorage for session</li>
+                        <li>No token expiration</li>
+                        <li>Recommendation: Implement JWT with expiration</li>
+                    </ul>
+                </li>
+                <li><strong>No HTTPS Enforcement</strong>
+                    <ul>
+                        <li>HTTP allowed in development</li>
+                        <li>Recommendation: Use HTTPS in production (Railway provides this)</li>
+                    </ul>
+                </li>
+                <li><strong>No Rate Limiting</strong>
+                    <ul>
+                        <li>Vulnerable to brute force attacks</li>
+                        <li>Recommendation: Add express-rate-limit middleware</li>
+                    </ul>
+                </li>
+                <li><strong>No Input Validation</strong>
+                    <ul>
+                        <li>Basic client-side validation only</li>
+                        <li>Recommendation: Add express-validator for server-side validation</li>
+                    </ul>
+                </li>
+                <li><strong>No CSRF Protection</strong>
+                    <ul>
+                        <li>Vulnerable to cross-site request forgery</li>
+                        <li>Recommendation: Add csurf middleware</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <h3>Best Practices for Production</h3>
+
+        <h4>Environment Variables</h4>
+        <pre>
+NODE_ENV=production
+JWT_SECRET=your-secret-key-here
+DATABASE_PATH=/data/trader_ledger.db
+CORS_ORIGIN=https://yourdomain.com
+        </pre>
+
+        <h4>Database Backups</h4>
+        <ul>
+            <li>Regular automated backups</li>
+            <li>Test restore procedures</li>
+            <li>Store backups securely off-site</li>
+        </ul>
+
+        <h4>Monitoring</h4>
+        <ul>
+            <li>Error logging (e.g., Sentry)</li>
+            <li>Performance monitoring</li>
+            <li>Uptime monitoring</li>
+            <li>Security audit logs</li>
+        </ul>
+
+        <h4>Updates</h4>
+        <ul>
+            <li>Keep dependencies updated</li>
+            <li>Monitor security advisories</li>
+            <li>Regular security audits</li>
+            <li>Penetration testing</li>
+        </ul>
+    </div>
+
+    <div id="future" class="page-break">
+        <h2>14. Future Enhancements</h2>
+
+        <h3>Potential Features</h3>
+
+        <h4>1. Advanced Reporting</h4>
+        <ul>
+            <li>PDF export of reports</li>
+            <li>Date range filtering</li>
+            <li>Profit/loss statements</li>
+            <li>Tax reports</li>
+            <li>Custom report builder</li>
+        </ul>
+
+        <h4>2. Multi-Currency Support</h4>
+        <ul>
+            <li>Currency selection</li>
+            <li>Exchange rate integration</li>
+            <li>Multi-currency transactions</li>
+        </ul>
+
+        <h4>3. Inventory Management</h4>
+        <ul>
+            <li>Stock tracking</li>
+            <li>Low stock alerts</li>
+            <li>Reorder points</li>
+            <li>Inventory valuation</li>
+        </ul>
+
+        <h4>4. Invoice Generation</h4>
+        <ul>
+            <li>Professional invoice templates</li>
+            <li>PDF generation</li>
+            <li>Email invoices to customers</li>
+            <li>Invoice numbering system</li>
+        </ul>
+
+        <h4>5. Payment Integration</h4>
+        <ul>
+            <li>Stripe/PayPal integration</li>
+            <li>Online payment acceptance</li>
+            <li>Payment gateway webhooks</li>
+            <li>Automatic payment recording</li>
+        </ul>
+
+        <h4>6. User Roles & Permissions</h4>
+        <ul>
+            <li>Admin, manager, staff roles</li>
+            <li>Permission-based access</li>
+            <li>Multi-user support</li>
+            <li>Activity logging</li>
+        </ul>
+
+        <h3>Technical Improvements</h3>
+
+        <h4>1. Database Migration</h4>
+        <ul>
+            <li>Move to PostgreSQL for scalability</li>
+            <li>Better concurrent user support</li>
+            <li>Advanced query capabilities</li>
+        </ul>
+
+        <h4>2. Testing</h4>
+        <ul>
+            <li>Unit tests (Jest)</li>
+            <li>Integration tests</li>
+            <li>E2E tests (Cypress)</li>
+            <li>Test coverage reports</li>
+        </ul>
+
+        <h4>3. Performance Optimization</h4>
+        <ul>
+            <li>Database query optimization</li>
+            <li>Caching layer (Redis)</li>
+            <li>CDN for static assets</li>
+            <li>Lazy loading</li>
+        </ul>
+
+        <h4>4. Code Quality</h4>
+        <ul>
+            <li>ESLint configuration</li>
+            <li>Prettier formatting</li>
+            <li>TypeScript migration</li>
+            <li>Comprehensive documentation</li>
+        </ul>
+    </div>
+
+
+    <div id="troubleshooting" class="page-break">
+        <h2>15. Troubleshooting</h2>
+
+        <h3>Common Issues</h3>
+
+        <h4>1. Server Won't Start</h4>
+        
+        <div class="code-box">
+            <p><strong>Error:</strong> Cannot find module 'express'</p>
+            <p><strong>Solution:</strong></p>
+            <pre>npm install</pre>
+        </div>
+
+        <div class="code-box">
+            <p><strong>Error:</strong> EADDRINUSE: address already in use</p>
+            <p><strong>Solution (Windows):</strong></p>
+            <pre>
+netstat -ano | findstr :3000
+taskkill /PID &lt;PID&gt; /F
+            </pre>
+            <p><strong>Solution (Linux/Mac):</strong></p>
+            <pre>
+lsof -i :3000
+kill -9 &lt;PID&gt;
+            </pre>
+        </div>
+
+        <h4>2. Database Issues</h4>
+        
+        <div class="code-box">
+            <p><strong>Error:</strong> SQLITE_CANTOPEN: unable to open database file</p>
+            <p><strong>Solution:</strong></p>
+            <pre>
+mkdir -p database
+chmod 755 database
+            </pre>
+        </div>
+
+        <div class="warning-box">
+            <p><strong>Error:</strong> SQLITE_CORRUPT: database disk image is malformed</p>
+            <p><strong>Solution:</strong></p>
+            <pre>
+# Backup current database
+cp database/trader_ledger.db database/trader_ledger.db.backup
+
+# Try to recover
+sqlite3 database/trader_ledger.db ".recover" | 
+  sqlite3 database/trader_ledger_recovered.db
+
+# Or start fresh (WARNING: loses data)
+rm database/trader_ledger.db
+npm start
+            </pre>
+        </div>
+
+        <h4>3. Login Issues</h4>
+        <p><strong>Problem:</strong> Can't login after registration</p>
+        <p><strong>Solutions:</strong></p>
+        <ul>
+            <li>Check browser console for errors</li>
+            <li>Verify server is running</li>
+            <li>Check API URL in auth.js</li>
+            <li>Clear localStorage: <code>localStorage.clear();</code></li>
+        </ul>
+
+        <h4>4. Charts Not Displaying</h4>
+        <p><strong>Problem:</strong> Charts show as blank</p>
+        <p><strong>Solutions:</strong></p>
+        <ul>
+            <li>Check browser console for Chart.js errors</li>
+            <li>Verify Chart.js CDN is accessible</li>
+            <li>Check if canvas elements exist</li>
+            <li>Verify data is being calculated correctly</li>
+        </ul>
+
+        <h4>5. Email Notifications Not Working</h4>
+        <p><strong>Problem:</strong> Email button doesn't work</p>
+        <p><strong>Solutions:</strong></p>
+        <ul>
+            <li>Ensure customer has valid email</li>
+            <li>Check browser popup blocker</li>
+            <li>Try different email client option</li>
+            <li>Use clipboard copy as fallback</li>
+        </ul>
+
+        <h3>Development Issues</h3>
+
+        <h4>Hot Reload Not Working</h4>
+        <pre>
+# Make sure nodemon is installed
+npm install --save-dev nodemon
+
+# Use dev script
+npm run dev
+        </pre>
+
+        <h4>CORS Errors</h4>
+        <p><strong>Error:</strong> Access blocked by CORS policy</p>
+        <p><strong>Solution:</strong> Update CORS config in server.js:</p>
+        <pre>
+const corsOptions = {
+    origin: '*', // Or specific origin
+    credentials: true
+};
+        </pre>
+
+        <h3>Production Issues</h3>
+
+        <h4>Application Crashes</h4>
+        <p><strong>Common causes:</strong></p>
+        <ul>
+            <li>Out of memory</li>
+            <li>Unhandled promise rejections</li>
+            <li>Database connection issues</li>
+        </ul>
+
+        <p><strong>Solutions:</strong></p>
+        <ul>
+            <li>Add error handling</li>
+            <li>Implement graceful shutdown</li>
+            <li>Monitor resource usage</li>
+            <li>Check logs: <code>railway logs</code></li>
+        </ul>
+
+        <h4>Slow Performance</h4>
+        <p><strong>Diagnosis:</strong></p>
+        <ul>
+            <li>Check database query performance</li>
+            <li>Monitor API response times</li>
+            <li>Check network latency</li>
+        </ul>
+
+        <p><strong>Solutions:</strong></p>
+        <ul>
+            <li>Add database indexes</li>
+            <li>Implement caching</li>
+            <li>Optimize queries</li>
+            <li>Use CDN for static assets</li>
+        </ul>
+    </div>
+
+
+    <div id="glossary" class="page-break">
+        <h2>16. Glossary</h2>
+
+        <h3>Technical Terms</h3>
+
+        <table>
+            <tr>
+                <th>Term</th>
+                <th>Definition</th>
+            </tr>
+            <tr>
+                <td>API</td>
+                <td>Application Programming Interface - Interface that allows frontend and backend to communicate using HTTP requests</td>
+            </tr>
+            <tr>
+                <td>bcrypt</td>
+                <td>Password hashing library that uses salt rounds to securely hash passwords</td>
+            </tr>
+            <tr>
+                <td>CORS</td>
+                <td>Cross-Origin Resource Sharing - Security feature that controls which domains can access your API</td>
+            </tr>
+            <tr>
+                <td>Express.js</td>
+                <td>Minimal and flexible Node.js web application framework</td>
+            </tr>
+            <tr>
+                <td>Foreign Key</td>
+                <td>Database constraint that links records between tables</td>
+            </tr>
+            <tr>
+                <td>JWT</td>
+                <td>JSON Web Token - Compact token format for securely transmitting information between parties</td>
+            </tr>
+            <tr>
+                <td>localStorage</td>
+                <td>Browser storage mechanism for persisting data on client-side</td>
+            </tr>
+            <tr>
+                <td>Middleware</td>
+                <td>Functions that execute during the request-response cycle in Express</td>
+            </tr>
+            <tr>
+                <td>Node.js</td>
+                <td>JavaScript runtime built on Chrome's V8 engine for server-side execution</td>
+            </tr>
+            <tr>
+                <td>REST API</td>
+                <td>Architectural style for designing networked applications using HTTP methods</td>
+            </tr>
+            <tr>
+                <td>SQLite</td>
+                <td>Lightweight, file-based relational database management system</td>
+            </tr>
+            <tr>
+                <td>SPA</td>
+                <td>Single Page Application - Web application that loads a single HTML page and dynamically updates content</td>
+            </tr>
+        </table>
+
+        <h3>Business Terms</h3>
+
+        <table>
+            <tr>
+                <th>Term</th>
+                <th>Definition</th>
+            </tr>
+            <tr>
+                <td>Accounts Payable</td>
+                <td>Money owed to suppliers (supplier debts)</td>
+            </tr>
+            <tr>
+                <td>Accounts Receivable</td>
+                <td>Money owed by customers (customer debts)</td>
+            </tr>
+            <tr>
+                <td>Balance</td>
+                <td>Remaining amount to be paid after partial payment</td>
+            </tr>
+            <tr>
+                <td>Cash Flow</td>
+                <td>Movement of money in and out of business</td>
+            </tr>
+            <tr>
+                <td>Net Profit</td>
+                <td>Total collected from customers minus total paid to suppliers</td>
+            </tr>
+            <tr>
+                <td>Partial Payment</td>
+                <td>Payment of less than the full amount owed</td>
+            </tr>
+            <tr>
+                <td>Purchase</td>
+                <td>Transaction where business buys from supplier</td>
+            </tr>
+            <tr>
+                <td>Sale</td>
+                <td>Transaction where business sells to customer</td>
+            </tr>
+            <tr>
+                <td>Supplier</td>
+                <td>Entity that provides goods or services to the business</td>
+            </tr>
+            <tr>
+                <td>Unit</td>
+                <td>Measurement type (pieces, kilograms, liters, etc.)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="page-break">
+        <h2>Conclusion</h2>
+
+        <p>Trader Ledger is a comprehensive business management solution built with modern web technologies. It provides essential features for tracking sales, purchases, and debts while maintaining simplicity and ease of use.</p>
+
+        <h3>Key Strengths</h3>
+        <ol>
+            <li><strong>Simple Setup:</strong> No complex configuration required</li>
+            <li><strong>Lightweight:</strong> SQLite database, no separate database server</li>
+            <li><strong>Modern UI:</strong> Responsive design with interactive charts</li>
+            <li><strong>Easy Deployment:</strong> Railway-ready with one-click deployment</li>
+            <li><strong>Self-contained:</strong> All features in a single application</li>
+        </ol>
+
+        <h3>Learning Outcomes</h3>
+        <p>By studying this project, developers can learn:</p>
+        <ul>
+            <li>Full-stack JavaScript development</li>
+            <li>RESTful API design</li>
+            <li>Database design and SQL</li>
+            <li>Authentication and security</li>
+            <li>Frontend state management</li>
+            <li>Chart.js data visualization</li>
+            <li>Responsive CSS design</li>
+            <li>Deployment to cloud platforms</li>
+        </ul>
+
+        <div class="info-box">
+            <h3>Quick Reference</h3>
+            
+            <h4>Essential Commands</h4>
+            <pre>
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Start production server
+npm start
+
+# Access application
+http://localhost:3000
+            </pre>
+
+            <h4>API Endpoints Summary</h4>
+            <ul>
+                <li>POST /api/auth/register - Register</li>
+                <li>POST /api/auth/login - Login</li>
+                <li>GET /api/sales/:userId - Get sales</li>
+                <li>POST /api/sales - Add sale</li>
+                <li>GET /api/purchases/:userId - Get purchases</li>
+                <li>POST /api/purchases - Add purchase</li>
+                <li>GET /api/dashboard/:userId - Get stats</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 50pt; padding: 30pt; border-top: 2pt solid #2e7d32;">
+            <p><strong>Project:</strong> Trader Ledger</p>
+            <p><strong>Version:</strong> 1.0.0</p>
+            <p><strong>License:</strong> MIT</p>
+            <p><strong>Documentation Last Updated:</strong> 2024</p>
+        </div>
+    </div>
+
+    <!-- Print Instructions -->
+    <div class="no-print" style="position: fixed; bottom: 20px; right: 20px; background: #2e7d32; color: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+        <p style="margin-bottom: 10px;"><strong>To save as PDF:</strong></p>
+        <ul style="margin-left: 20px;">
+            <li>Press Ctrl+P (Windows) or Cmd+P (Mac)</li>
+            <li>Select "Save as PDF" as destination</li>
+            <li>Click "Save"</li>
+        </ul>
+    </div>
+
+</body>
+</html>
